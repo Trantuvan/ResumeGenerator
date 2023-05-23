@@ -1,6 +1,6 @@
 ﻿namespace ResumeGenerator.Core.Entities;
 
-public class Certificate
+public class Certificate : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
     public DateTime StartDate { get; set; }
