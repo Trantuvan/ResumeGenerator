@@ -8,8 +8,7 @@ public class Address : BaseEntity<Guid>
 
     public int EducationId { get; set; }
     public int WorkplaceId { get; set; }
-    public int PersonId { get; set; }
     public Education Education { get; set; } = default!;
     public Workplace Workplace { get; set; } = default!;
-    public Person Person { get; set; } = default!;
+    public ICollection<Person> People { get; set; } = new List<Person>();
 }

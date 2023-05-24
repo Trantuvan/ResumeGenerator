@@ -4,10 +4,11 @@ public class Education : BaseEntity<Guid>
 {
     public string Name { get; set; } = string.Empty;
     public string School { get; set; } = string.Empty;
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public DateTime? StartDate { get; set; } = DateTime.MinValue;
+    public DateTime? EndDate { get; set; } = DateTime.MinValue;
+    public bool IsPresent { get; set; } = false;
     public string? Description { get; set; }
 
-    public int PersonId { get; set; }
-    public Person Person { get; set; } = default!;
+    public ICollection<Person> Person { get; set; } = new List<Person>();
+    public ICollection<Address> Addresses { get; set; } = new List<Address>();
 }
