@@ -4,7 +4,7 @@ public class Person : BaseEntity<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public DateTime DOB { get; set; }
+    public DateTime? DOB { get; set; } = DateTime.MinValue;
     public Genders Gender { get; set; } = Genders.Male;
     public string? Photo { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
