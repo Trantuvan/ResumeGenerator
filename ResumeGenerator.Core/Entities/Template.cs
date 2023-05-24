@@ -1,8 +1,6 @@
-﻿using ResumeGenerator.Core.Enums;
+﻿namespace ResumeGenerator.Core;
 
-namespace ResumeGenerator.Core.Entities;
-
-public class Template : BaseEntity
+public class Template : BaseEntity<Guid>
 {
     public string Name { get; set; } = string.Empty;
     public ResumeTheme? Theme { get; set; } = ResumeTheme.Professional;

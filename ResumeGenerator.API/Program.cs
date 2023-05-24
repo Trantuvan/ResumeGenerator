@@ -1,6 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-using ResumeGenerator.Core.Database;
+using ResumeGenerator.Core;
 
 namespace ResumeGenerator.API;
 

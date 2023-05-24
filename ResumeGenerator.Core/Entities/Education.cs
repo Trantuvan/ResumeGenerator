@@ -1,6 +1,6 @@
-﻿namespace ResumeGenerator.Core.Entities;
+﻿namespace ResumeGenerator.Core;
 
-public class Education : BaseEntity
+public class Education : BaseEntity<Guid>
 {
     public string Name { get; set; } = string.Empty;
     public string School { get; set; } = string.Empty;

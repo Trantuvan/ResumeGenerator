@@ -1,8 +1,6 @@
-﻿using ResumeGenerator.Core.Enums;
+﻿namespace ResumeGenerator.Core;
 
-namespace ResumeGenerator.Core.Entities;
-
-public class Person : BaseEntity
+public class Person : BaseEntity<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -20,6 +18,5 @@ public class Person : BaseEntity
     public ICollection<Language> Languages { get; set; } = new List<Language>();
     public ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
     public ICollection<Template> Templates { get; set; } = new List<Template>();
-
 }
 

@@ -1,4 +1,4 @@
-﻿namespace ResumeGenerator.Core.Enums;
+﻿namespace ResumeGenerator.Core;
 
 public enum FontFamilies
 {

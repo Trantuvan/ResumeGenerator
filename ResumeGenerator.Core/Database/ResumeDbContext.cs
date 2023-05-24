@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ResumeGenerator.Core.Entities;
 
-namespace ResumeGenerator.Core.Database;
+namespace ResumeGenerator.Core;
 
 public class ResumeDbContext : DbContext
 {
