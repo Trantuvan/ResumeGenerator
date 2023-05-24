@@ -6,6 +6,5 @@ public class Certificate : BaseEntity<Guid>
     public DateTime Period { get; set; } = DateTime.MinValue;
     public bool IsPresent { get; set; } = false;
 
-    public int PersonId { get; set; }
     public Person Person { get; set; } = default!;
 }

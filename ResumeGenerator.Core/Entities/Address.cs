@@ -6,8 +6,6 @@ public class Address : BaseEntity<Guid>
     public string City { get; set; } = string.Empty;
     public string? PostalCode { get; set; } = string.Empty;
 
-    public int EducationId { get; set; }
-    public int WorkplaceId { get; set; }
     public Education Education { get; set; } = default!;
     public Workplace Workplace { get; set; } = default!;
     public ICollection<Person> People { get; set; } = new List<Person>();
