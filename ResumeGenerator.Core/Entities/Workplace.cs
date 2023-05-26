@@ -11,5 +11,6 @@ public class Workplace : BaseEntity<Guid>
     public string? Description { get; set; } = string.Empty;
 
     public ICollection<Person> People { get; set; } = new List<Person>();
+    public ICollection<PersonWorkplace> PersonWorkplaces { get; set; } = new List<PersonWorkplace>();
     public ICollection<Address> Addresses { get; set; } = new List<Address>();
 }

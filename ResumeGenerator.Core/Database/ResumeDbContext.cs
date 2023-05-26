@@ -56,8 +56,8 @@ public class ResumeDbContext : DbContext
             .HasMany(p => p.Addresses)
             .WithMany(a => a.People)
             .UsingEntity<PersonAddress>("PersonAddress",
-            r => r.HasOne<Address>().WithMany(a => a.PersonAddresses).HasForeignKey(pa => pa.PersonId),
-            l => l.HasOne<Person>().WithMany(p => p.PersonAddresses).HasForeignKey(pa => pa.AddressId),
+            r => r.HasOne<Address>().WithMany(a => a.PersonAddresses).HasForeignKey(pa => pa.AddressId),
+            l => l.HasOne<Person>().WithMany(p => p.PersonAddresses).HasForeignKey(pa => pa.PersonId),
             j => j.Property(pa => pa.Id).HasDefaultValueSql("NEWID()"));
 
         modelBuilder.Entity<Person>()
@@ -67,6 +67,14 @@ public class ResumeDbContext : DbContext
                    r => r.HasOne<Education>().WithMany(e => e.PersonEducations).HasForeignKey(pe => pe.EducationId),
                    r => r.HasOne<Person>().WithMany(e => e.PersonEducations).HasForeignKey(pe => pe.PersonId),
                    j => j.Property(pa => pa.Id).HasDefaultValueSql("NEWID()"));
+
+        modelBuilder.Entity<Person>()
+                          .HasMany(p => p.Workplaces)
+                          .WithMany(w => w.People)
+                          .UsingEntity<PersonWorkplace>("PersonWorkplace",
+                          r => r.HasOne<Workplace>().WithMany(w => w.PersonWorkplaces).HasForeignKey(pw => pw.WorkplaceId),
+                          r => r.HasOne<Person>().WithMany(e => e.PersonWorkplaces).HasForeignKey(pw => pw.PersonId),
+                          j => j.Property(pw => pw.Id).HasDefaultValueSql("NEWID()"));
 
     }
 }
