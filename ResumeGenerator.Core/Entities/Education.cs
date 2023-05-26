@@ -9,6 +9,7 @@ public class Education : BaseEntity<Guid>
     public bool IsPresent { get; set; } = false;
     public string? Description { get; set; }
 
-    public ICollection<Person> Person { get; set; } = new List<Person>();
+    public ICollection<Person> People { get; set; } = new List<Person>();
+    public ICollection<PersonEducation> PersonEducations { get; set; } = new List<PersonEducation>();
     public ICollection<Address> Addresses { get; set; } = new List<Address>();
 }
