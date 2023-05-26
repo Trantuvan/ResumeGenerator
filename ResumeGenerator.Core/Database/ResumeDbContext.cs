@@ -50,5 +50,14 @@ public class ResumeDbContext : DbContext
         modelBuilder.Entity<Template>()
           .Property(p => p.Id)
           .HasDefaultValueSql("NEWID()");
+
+        //relationship with People table
+        modelBuilder.Entity<Person>()
+            .HasMany(p => p.Addresses)
+            .WithMany(a => a.People)
+            .UsingEntity<PersonAddress>("PersonAddress",
+            r => r.HasOne<Address>().WithMany(a => a.PersonAddresses).HasForeignKey(pa => pa.PersonId),
+            l => l.HasOne<Person>().WithMany(p => p.PersonAddresses).HasForeignKey(pa => pa.AddressId),
+            j => j.Property(pa => pa.Id).HasDefaultValueSql("NEWID()"));
     }
 }

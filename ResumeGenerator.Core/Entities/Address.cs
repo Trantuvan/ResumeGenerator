@@ -9,4 +9,5 @@ public class Address : BaseEntity<Guid>
     public Education Education { get; set; } = default!;
     public Workplace Workplace { get; set; } = default!;
     public ICollection<Person> People { get; set; } = new List<Person>();
+    public ICollection<PersonAddress> PersonAddresses { get; set; } = new List<PersonAddress>();
 }
