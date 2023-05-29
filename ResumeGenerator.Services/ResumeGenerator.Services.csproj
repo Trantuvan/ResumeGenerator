@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Impls\" />
+    <ProjectReference Include="..\ResumeGenerator.Core\ResumeGenerator.Core.csproj" />
   </ItemGroup>
 
 </Project>
