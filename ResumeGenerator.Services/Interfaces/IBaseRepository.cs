@@ -11,5 +11,5 @@ public interface IBaseRepository<TEntity> where TEntity : class
     void Update(TEntity entity);
     void Remove(TEntity entity);
     void RemoveRange(IEnumerable<TEntity> entities);
-    Task SaveChangesAsync(CancellationToken? token = default);
+    Task SaveChangesAsync(CancellationToken token = default);
 }
