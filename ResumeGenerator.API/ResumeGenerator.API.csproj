@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ResumeGenerator.Core\ResumeGenerator.Core.csproj" />
+    <ProjectReference Include="..\ResumeGenerator.Services\ResumeGenerator.Services.csproj" />
   </ItemGroup>
 
 </Project>

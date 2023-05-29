@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using ResumeGenerator.Core;
+using ResumeGenerator.Services;
 
 namespace ResumeGenerator.API;
 
@@ -17,6 +18,11 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // Add DB layer
+        builder.Services
+            .AddScoped<IPersonRepository, PersonRepository>()
+            .AddScoped<IAddressRepository, AddressReposity>();
 
         var app = builder.Build();
 
