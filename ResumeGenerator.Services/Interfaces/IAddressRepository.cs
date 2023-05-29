@@ -2,6 +2,6 @@
 
 namespace ResumeGenerator.Services;
 
-public interface IPeople : IBaseRepository<Person>
+public interface IAddressRepository : IBaseRepository<Address>
 {
 }
