@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using ResumeGenerator.Core;
 using ResumeGenerator.Services;
 
@@ -17,7 +18,7 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo { Title = "ResumeGeneratorApi", Version = "v1", Description = "Fill in the blanks, choose a template and download your CV in minutes." }));
 
         // Add DB layer
         builder.Services
@@ -27,16 +28,22 @@ public class Program
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (!app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseExceptionHandler("/Error");
+            app.UseDeveloperExceptionPage();
+            app.UseHsts();
         }
+
+        app.UseSwagger();
+
+        app.UseSwaggerUI(options => options.SwaggerEndpoint(
+            "/swagger/v1/swagger.json",
+            "ResumeGenerator v1"));
 
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 
