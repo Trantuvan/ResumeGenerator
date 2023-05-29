@@ -14,43 +14,44 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _context = context;
         _dbSet = _context.Set<TEntity>();
     }
+
     public void Add(TEntity entity)
     {
-        throw new NotImplementedException();
+        _dbSet.Add(entity);
     }
 
     public void AddRange(IEnumerable<TEntity> entities)
     {
-        throw new NotImplementedException();
+        _dbSet.AddRange(entities);
     }
 
     public IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>>? predicate = null)
     {
-        throw new NotImplementedException();
+        return _dbSet.WhereIf(predicate is not null, predicate!);
     }
 
-    public Task<TEntity?> FindByIdAsync(Guid id, CancellationToken? token = null)
+    public async Task<TEntity?> FindByIdAsync(Guid id, CancellationToken? token = null)
     {
-        throw new NotImplementedException();
+        return await _dbSet.FindAsync(id, token);
     }
 
     public void Remove(TEntity entity)
     {
-        throw new NotImplementedException();
+        _dbSet.Remove(entity);
     }
 
     public void RemoveRange(IEnumerable<TEntity> entities)
     {
-        throw new NotImplementedException();
+        _dbSet.RemoveRange(entities);
     }
 
-    public Task SaveChangesAsync(CancellationToken? token = null)
+    public async Task SaveChangesAsync(CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync(token);
     }
 
     public void Update(TEntity entity)
     {
-        throw new NotImplementedException();
+        _dbSet.Update(entity);
     }
 }
