@@ -25,6 +25,17 @@ public class Program
             .AddScoped<IPersonRepository, PersonRepository>()
             .AddScoped<IAddressRepository, AddressReposity>();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("ClientPermission", policy =>
+            {
+                policy.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("https://localhost:7254", "http://localhost:5218")
+                .AllowCredentials();
+            });
+        });
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -42,6 +53,8 @@ public class Program
             "ResumeGenerator v1"));
 
         app.UseHttpsRedirection();
+
+        app.UseCors("ClientPermission");
 
         app.UseAuthorization();
 
