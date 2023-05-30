@@ -8,4 +8,4 @@ public class BaseDTO<T>
     public T Id { get; set; } = default!;
 }
 
-public abstract class BaseDTO : BaseDTO<int> { }
+public abstract class BaseDTO : BaseDTO<Guid> { }
