@@ -23,7 +23,13 @@ public class Program
         // Add DB layer
         builder.Services
             .AddScoped<IPersonRepository, PersonRepository>()
-            .AddScoped<IAddressRepository, AddressReposity>();
+            .AddScoped<IAddressRepository, AddressReposity>()
+            .AddScoped<ICertificateRepository, CertificateRepository>()
+            .AddScoped<IEducationRepository, EducationReposity>()
+            .AddScoped<ILanguageRepository, LanguageRepository>()
+            .AddScoped<ISkillRepository, SkillRepository>()
+            .AddScoped<ITemplateRepository, TemplateRepository>()
+            .AddScoped<IWorkplaceRepository, WorkplaceRepository>();
 
         builder.Services.AddCors(options =>
         {
