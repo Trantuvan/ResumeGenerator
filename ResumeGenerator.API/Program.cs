@@ -1,4 +1,5 @@
 
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ResumeGenerator.Core;
@@ -41,6 +42,10 @@ public class Program
                 .AllowCredentials();
             });
         });
+
+        var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<ResumeProfile>());
+        IMapper mapper = mapperConfig.CreateMapper();
+        builder.Services.AddSingleton(mapper);
 
         var app = builder.Build();
 
