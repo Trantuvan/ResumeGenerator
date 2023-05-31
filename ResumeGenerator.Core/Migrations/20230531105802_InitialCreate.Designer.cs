@@ -12,8 +12,8 @@ using ResumeGenerator.Core;
 namespace ResumeGenerator.Core.Migrations
 {
     [DbContext(typeof(ResumeDbContext))]
-    [Migration("20230526114850_ManyToMany_Person_Address")]
-    partial class ManyToMany_Person_Address
+    [Migration("20230531105802_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace ResumeGenerator.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("EducationPerson", b =>
-                {
-                    b.Property<Guid>("EducationsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PersonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("EducationsId", "PersonId");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("EducationPerson");
-                });
 
             modelBuilder.Entity("PersonAddress", b =>
                 {
@@ -62,17 +47,46 @@ namespace ResumeGenerator.Core.Migrations
                     b.ToTable("PersonAddress");
                 });
 
+            modelBuilder.Entity("PersonEducation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<Guid>("EducationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EducationId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("PersonEducation");
+                });
+
             modelBuilder.Entity("PersonWorkplace", b =>
                 {
-                    b.Property<Guid>("PeopleId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<Guid>("PersonId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("WorkplacesId")
+                    b.Property<Guid>("WorkplaceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PeopleId", "WorkplacesId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("WorkplacesId");
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("WorkplaceId");
 
                     b.ToTable("PersonWorkplace");
                 });
@@ -88,7 +102,7 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EducationId")
+                    b.Property<Guid?>("EducationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PostalCode")
@@ -98,7 +112,7 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("WorkplaceId")
+                    b.Property<Guid?>("WorkplaceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -322,31 +336,31 @@ namespace ResumeGenerator.Core.Migrations
                     b.ToTable("Workplaces");
                 });
 
-            modelBuilder.Entity("EducationPerson", b =>
-                {
-                    b.HasOne("ResumeGenerator.Core.Education", null)
-                        .WithMany()
-                        .HasForeignKey("EducationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ResumeGenerator.Core.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PersonAddress", b =>
                 {
-                    b.HasOne("ResumeGenerator.Core.Person", null)
+                    b.HasOne("ResumeGenerator.Core.Address", null)
                         .WithMany("PersonAddresses")
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ResumeGenerator.Core.Address", null)
+                    b.HasOne("ResumeGenerator.Core.Person", null)
                         .WithMany("PersonAddresses")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PersonEducation", b =>
+                {
+                    b.HasOne("ResumeGenerator.Core.Education", null)
+                        .WithMany("PersonEducations")
+                        .HasForeignKey("EducationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ResumeGenerator.Core.Person", null)
+                        .WithMany("PersonEducations")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -355,14 +369,14 @@ namespace ResumeGenerator.Core.Migrations
             modelBuilder.Entity("PersonWorkplace", b =>
                 {
                     b.HasOne("ResumeGenerator.Core.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PeopleId")
+                        .WithMany("PersonWorkplaces")
+                        .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ResumeGenerator.Core.Workplace", null)
-                        .WithMany()
-                        .HasForeignKey("WorkplacesId")
+                        .WithMany("PersonWorkplaces")
+                        .HasForeignKey("WorkplaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -371,15 +385,11 @@ namespace ResumeGenerator.Core.Migrations
                 {
                     b.HasOne("ResumeGenerator.Core.Education", "Education")
                         .WithMany("Addresses")
-                        .HasForeignKey("EducationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EducationId");
 
                     b.HasOne("ResumeGenerator.Core.Workplace", "Workplace")
                         .WithMany("Addresses")
-                        .HasForeignKey("WorkplaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WorkplaceId");
 
                     b.Navigation("Education");
 
@@ -434,6 +444,8 @@ namespace ResumeGenerator.Core.Migrations
             modelBuilder.Entity("ResumeGenerator.Core.Education", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("PersonEducations");
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Person", b =>
@@ -444,6 +456,10 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.Navigation("PersonAddresses");
 
+                    b.Navigation("PersonEducations");
+
+                    b.Navigation("PersonWorkplaces");
+
                     b.Navigation("Skills");
 
                     b.Navigation("Templates");
@@ -452,6 +468,8 @@ namespace ResumeGenerator.Core.Migrations
             modelBuilder.Entity("ResumeGenerator.Core.Workplace", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("PersonWorkplaces");
                 });
 #pragma warning restore 612, 618
         }

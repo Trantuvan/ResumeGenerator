@@ -99,7 +99,7 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EducationId")
+                    b.Property<Guid?>("EducationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PostalCode")
@@ -109,7 +109,7 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("WorkplaceId")
+                    b.Property<Guid?>("WorkplaceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -382,15 +382,11 @@ namespace ResumeGenerator.Core.Migrations
                 {
                     b.HasOne("ResumeGenerator.Core.Education", "Education")
                         .WithMany("Addresses")
-                        .HasForeignKey("EducationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EducationId");
 
                     b.HasOne("ResumeGenerator.Core.Workplace", "Workplace")
                         .WithMany("Addresses")
-                        .HasForeignKey("WorkplaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WorkplaceId");
 
                     b.Navigation("Education");
 

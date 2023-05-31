@@ -15,7 +15,7 @@ namespace ResumeGenerator.Core.Migrations
                 name: "Educations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     School = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -32,7 +32,7 @@ namespace ResumeGenerator.Core.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -51,7 +51,7 @@ namespace ResumeGenerator.Core.Migrations
                 name: "Workplaces",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Employer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsInternship = table.Column<bool>(type: "bit", nullable: false),
@@ -69,7 +69,7 @@ namespace ResumeGenerator.Core.Migrations
                 name: "Certificates",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Period = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsPresent = table.Column<bool>(type: "bit", nullable: false),
@@ -87,34 +87,10 @@ namespace ResumeGenerator.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EducationPerson",
-                columns: table => new
-                {
-                    EducationsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EducationPerson", x => new { x.EducationsId, x.PersonId });
-                    table.ForeignKey(
-                        name: "FK_EducationPerson_Educations_EducationsId",
-                        column: x => x.EducationsId,
-                        principalTable: "Educations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EducationPerson_People_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -130,10 +106,35 @@ namespace ResumeGenerator.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PersonEducation",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EducationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonEducation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonEducation_Educations_EducationId",
+                        column: x => x.EducationId,
+                        principalTable: "Educations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonEducation_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Skills",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -153,7 +154,7 @@ namespace ResumeGenerator.Core.Migrations
                 name: "Templates",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Theme = table.Column<int>(type: "int", nullable: true),
                     Font = table.Column<int>(type: "int", nullable: true),
@@ -175,12 +176,12 @@ namespace ResumeGenerator.Core.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     StreetAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EducationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WorkplaceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    EducationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    WorkplaceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,10 +190,33 @@ namespace ResumeGenerator.Core.Migrations
                         name: "FK_Addresses_Educations_EducationId",
                         column: x => x.EducationId,
                         principalTable: "Educations",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Addresses_Workplaces_WorkplaceId",
+                        column: x => x.WorkplaceId,
+                        principalTable: "Workplaces",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonWorkplace",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WorkplaceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonWorkplace", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonWorkplace_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Addresses_Workplaces_WorkplaceId",
+                        name: "FK_PersonWorkplace_Workplaces_WorkplaceId",
                         column: x => x.WorkplaceId,
                         principalTable: "Workplaces",
                         principalColumn: "Id",
@@ -200,48 +224,25 @@ namespace ResumeGenerator.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonWorkplace",
+                name: "PersonAddress",
                 columns: table => new
                 {
-                    PeopleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WorkplacesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
+                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonWorkplace", x => new { x.PeopleId, x.WorkplacesId });
+                    table.PrimaryKey("PK_PersonAddress", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonWorkplace_People_PeopleId",
-                        column: x => x.PeopleId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PersonWorkplace_Workplaces_WorkplacesId",
-                        column: x => x.WorkplacesId,
-                        principalTable: "Workplaces",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AddressPerson",
-                columns: table => new
-                {
-                    AddressesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PeopleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AddressPerson", x => new { x.AddressesId, x.PeopleId });
-                    table.ForeignKey(
-                        name: "FK_AddressPerson_Addresses_AddressesId",
-                        column: x => x.AddressesId,
+                        name: "FK_PersonAddress_Addresses_AddressId",
+                        column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AddressPerson_People_PeopleId",
-                        column: x => x.PeopleId,
+                        name: "FK_PersonAddress_People_PersonId",
+                        column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -258,18 +259,8 @@ namespace ResumeGenerator.Core.Migrations
                 column: "WorkplaceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AddressPerson_PeopleId",
-                table: "AddressPerson",
-                column: "PeopleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Certificates_PersonId",
                 table: "Certificates",
-                column: "PersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EducationPerson_PersonId",
-                table: "EducationPerson",
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
@@ -278,9 +269,34 @@ namespace ResumeGenerator.Core.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonWorkplace_WorkplacesId",
+                name: "IX_PersonAddress_AddressId",
+                table: "PersonAddress",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonAddress_PersonId",
+                table: "PersonAddress",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonEducation_EducationId",
+                table: "PersonEducation",
+                column: "EducationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonEducation_PersonId",
+                table: "PersonEducation",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonWorkplace_PersonId",
                 table: "PersonWorkplace",
-                column: "WorkplacesId");
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonWorkplace_WorkplaceId",
+                table: "PersonWorkplace",
+                column: "WorkplaceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_PersonId",
@@ -297,16 +313,16 @@ namespace ResumeGenerator.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AddressPerson");
-
-            migrationBuilder.DropTable(
                 name: "Certificates");
 
             migrationBuilder.DropTable(
-                name: "EducationPerson");
+                name: "Languages");
 
             migrationBuilder.DropTable(
-                name: "Languages");
+                name: "PersonAddress");
+
+            migrationBuilder.DropTable(
+                name: "PersonEducation");
 
             migrationBuilder.DropTable(
                 name: "PersonWorkplace");
