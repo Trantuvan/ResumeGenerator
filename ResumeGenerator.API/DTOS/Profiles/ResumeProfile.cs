@@ -29,6 +29,10 @@ public class ResumeProfile : Profile
         CreateMap<PersonDTO, Person>()
             .ForMember(p => p.Id, opt => opt.Ignore());
 
+        CreateMap<Person, PersonalDetailsForm>();
+        CreateMap<PersonalDetailsForm, Person>()
+           .ForMember(p => p.Id, otp => otp.Ignore());
+
         CreateMap<Skill, SkillDTO>()
             .ForMember(s => s.Level, otp => otp.MapFrom(s => s.Level.ToString()));
         CreateMap<SkillDTO, Skill>()
