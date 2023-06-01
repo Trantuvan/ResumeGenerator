@@ -22,6 +22,28 @@ namespace ResumeGenerator.Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EducationAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EducationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("EducationId");
+
+                    b.ToTable("EducationAddress");
+                });
+
             modelBuilder.Entity("PersonAddress", b =>
                 {
                     b.Property<Guid>("Id")
@@ -99,9 +121,6 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("EducationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -109,16 +128,9 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("WorkplaceId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("EducationId");
-
-                    b.HasIndex("WorkplaceId");
-
-                    b.ToTable("Addresses");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Certificate", b =>
@@ -145,7 +157,7 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Certificates");
+                    b.ToTable("Certificate", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Education", b =>
@@ -177,7 +189,7 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Educations");
+                    b.ToTable("Education", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Language", b =>
@@ -201,7 +213,7 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Language", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Person", b =>
@@ -241,7 +253,7 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.ToTable("Person", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Skill", b =>
@@ -265,7 +277,7 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skill", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Template", b =>
@@ -295,7 +307,7 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Templates");
+                    b.ToTable("Template", (string)null);
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Workplace", b =>
@@ -330,7 +342,44 @@ namespace ResumeGenerator.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Workplaces");
+                    b.ToTable("Workplace", (string)null);
+                });
+
+            modelBuilder.Entity("WorkplaceAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkplaceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("WorkplaceId");
+
+                    b.ToTable("WorkplaceAddress");
+                });
+
+            modelBuilder.Entity("EducationAddress", b =>
+                {
+                    b.HasOne("ResumeGenerator.Core.Address", null)
+                        .WithMany("EducationAddresses")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ResumeGenerator.Core.Education", null)
+                        .WithMany("EducationAddresses")
+                        .HasForeignKey("EducationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PersonAddress", b =>
@@ -378,21 +427,6 @@ namespace ResumeGenerator.Core.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ResumeGenerator.Core.Address", b =>
-                {
-                    b.HasOne("ResumeGenerator.Core.Education", "Education")
-                        .WithMany("Addresses")
-                        .HasForeignKey("EducationId");
-
-                    b.HasOne("ResumeGenerator.Core.Workplace", "Workplace")
-                        .WithMany("Addresses")
-                        .HasForeignKey("WorkplaceId");
-
-                    b.Navigation("Education");
-
-                    b.Navigation("Workplace");
-                });
-
             modelBuilder.Entity("ResumeGenerator.Core.Certificate", b =>
                 {
                     b.HasOne("ResumeGenerator.Core.Person", "Person")
@@ -433,14 +467,33 @@ namespace ResumeGenerator.Core.Migrations
                     b.Navigation("Person");
                 });
 
+            modelBuilder.Entity("WorkplaceAddress", b =>
+                {
+                    b.HasOne("ResumeGenerator.Core.Address", null)
+                        .WithMany("WorkplaceAddresses")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ResumeGenerator.Core.Workplace", null)
+                        .WithMany("WorkplaceAddresses")
+                        .HasForeignKey("WorkplaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ResumeGenerator.Core.Address", b =>
                 {
+                    b.Navigation("EducationAddresses");
+
                     b.Navigation("PersonAddresses");
+
+                    b.Navigation("WorkplaceAddresses");
                 });
 
             modelBuilder.Entity("ResumeGenerator.Core.Education", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("EducationAddresses");
 
                     b.Navigation("PersonEducations");
                 });
@@ -464,9 +517,9 @@ namespace ResumeGenerator.Core.Migrations
 
             modelBuilder.Entity("ResumeGenerator.Core.Workplace", b =>
                 {
-                    b.Navigation("Addresses");
-
                     b.Navigation("PersonWorkplaces");
+
+                    b.Navigation("WorkplaceAddresses");
                 });
 #pragma warning restore 612, 618
         }
