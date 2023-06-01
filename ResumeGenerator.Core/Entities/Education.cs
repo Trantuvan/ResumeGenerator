@@ -12,4 +12,5 @@ public class Education : BaseEntity<Guid>
     public ICollection<Person> People { get; set; } = new List<Person>();
     public ICollection<PersonEducation> PersonEducations { get; set; } = new List<PersonEducation>();
     public ICollection<Address> Addresses { get; set; } = new List<Address>();
+    public ICollection<EducationAddress> EducationAddresses { get; set; } = new List<EducationAddress>();
 }

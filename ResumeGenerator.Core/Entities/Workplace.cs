@@ -13,4 +13,5 @@ public class Workplace : BaseEntity<Guid>
     public ICollection<Person> People { get; set; } = new List<Person>();
     public ICollection<PersonWorkplace> PersonWorkplaces { get; set; } = new List<PersonWorkplace>();
     public ICollection<Address> Addresses { get; set; } = new List<Address>();
+    public ICollection<WorkplaceAddress> WorkplaceAddresses { get; set; } = new List<WorkplaceAddress>();
 }
