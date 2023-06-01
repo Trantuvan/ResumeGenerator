@@ -20,38 +20,46 @@ public class ResumeDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Person>()
+            .ToTable("Person")
             .Property(p => p.Id)
             .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Address>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Address")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Education>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Education")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Workplace>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Workplace")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Certificate>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Certificate")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Language>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Language")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Skill>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Skill")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<Template>()
-          .Property(p => p.Id)
-          .HasDefaultValueSql("NEWID()");
+            .ToTable("Template")
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWID()");
 
-        //relationship with People table
+        //Many to Many with person table
         modelBuilder.Entity<Person>()
             .HasMany(p => p.Addresses)
             .WithMany(a => a.People)
