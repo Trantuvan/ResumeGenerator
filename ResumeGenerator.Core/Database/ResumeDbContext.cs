@@ -84,5 +84,21 @@ public class ResumeDbContext : DbContext
                           r => r.HasOne<Person>().WithMany(e => e.PersonWorkplaces).HasForeignKey(pw => pw.PersonId),
                           j => j.Property(pw => pw.Id).HasDefaultValueSql("NEWID()"));
 
+        //Many to Many with Address table
+        modelBuilder.Entity<Address>()
+                          .HasMany(a => a.Workplaces)
+                          .WithMany(w => w.Addresses)
+                          .UsingEntity<WorkplaceAddress>("WorkplaceAddress",
+                          r => r.HasOne<Workplace>().WithMany(w => w.WorkplaceAddresses).HasForeignKey(wa => wa.WorkplaceId),
+                          r => r.HasOne<Address>().WithMany(a => a.WorkplaceAddresses).HasForeignKey(wa => wa.AddressId),
+                          j => j.Property(wa => wa.Id).HasDefaultValueSql("NEWID()"));
+
+        modelBuilder.Entity<Address>()
+                    .HasMany(a => a.Educations)
+                    .WithMany(edu => edu.Addresses)
+                    .UsingEntity<EducationAddress>("EducationAddress",
+                    r => r.HasOne<Education>().WithMany(edu => edu.EducationAddresses).HasForeignKey(edua => edua.EducationId),
+                    r => r.HasOne<Address>().WithMany(a => a.EducationAddresses).HasForeignKey(edua => edua.AddressId),
+                    j => j.Property(edua => edua.Id).HasDefaultValueSql("NEWID()"));
     }
 }
