@@ -23,7 +23,7 @@ public class ResumeProfile : Profile
             .ForMember(l => l.Level, otp => otp.MapFrom(l => l.Level.ToString()));
         CreateMap<LanguageDTO, Language>()
             .ForMember(l => l.Id, otp => otp.Ignore())
-            .ForMember(l => l.Level, otp => otp.MapFrom(l => Enum.GetName(typeof(Levels), l.Level)));
+            .ForMember(l => l.Level, otp => otp.MapFrom(l => (Levels)Enum.Parse(typeof(Levels), l.Level, true)));
 
         CreateMap<Person, PersonDTO>()
             .ForMember(p => p.Gender, opt => opt.MapFrom(p => p.Gender.ToString()));
@@ -35,7 +35,7 @@ public class ResumeProfile : Profile
             .ForMember(s => s.Level, otp => otp.MapFrom(s => s.Level.ToString()));
         CreateMap<SkillDTO, Skill>()
             .ForMember(s => s.Id, opt => opt.Ignore())
-            .ForMember(s => s.Level, otp => otp.MapFrom(s => Enum.GetName(typeof(Levels), s.Level)));
+            .ForMember(s => s.Level, otp => otp.MapFrom(s => (Levels)Enum.Parse(typeof(Levels), s.Level, true)));
 
         CreateMap<Template, TemplateDTO>()
           .ForMember(t => t.Theme, otp => otp.MapFrom(t => t.Theme.ToString()))
@@ -43,9 +43,9 @@ public class ResumeProfile : Profile
           .ForMember(t => t.Font, otp => otp.MapFrom(t => t.Font.ToString()));
         CreateMap<TemplateDTO, Template>()
             .ForMember(t => t.Id, opt => opt.Ignore())
-            .ForMember(t => t.Theme, otp => otp.MapFrom(t => Enum.GetName(typeof(ResumeTheme), t.Theme)))
-            .ForMember(t => t.FontSize, otp => otp.MapFrom(t => Enum.GetName(typeof(FontSizes), t.FontSize)))
-            .ForMember(t => t.Font, otp => otp.MapFrom(t => Enum.GetName(typeof(FontFamilies), t.Font)));
+            .ForMember(t => t.Theme, otp => otp.MapFrom(t => (ResumeTheme)Enum.Parse(typeof(ResumeTheme), t.Theme, true)))
+            .ForMember(t => t.FontSize, otp => otp.MapFrom(t => (FontSizes)Enum.Parse(typeof(FontSizes), t.FontSize, true)))
+            .ForMember(t => t.Font, otp => otp.MapFrom(t => (FontFamilies)Enum.Parse(typeof(FontFamilies), t.Font, true)));
 
         CreateMap<WorkplaceDTO, Workplace>();
         CreateMap<WorkplaceDTO, Workplace>()
