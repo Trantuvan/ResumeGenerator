@@ -25,13 +25,11 @@ public class ResumeProfile : Profile
             .ForMember(l => l.Id, otp => otp.Ignore())
             .ForMember(l => l.Level, otp => otp.MapFrom(l => Enum.GetName(typeof(Levels), l.Level)));
 
-        CreateMap<Person, PersonDTO>();
+        CreateMap<Person, PersonDTO>()
+            .ForMember(p => p.Gender, opt => opt.MapFrom(p => p.Gender.ToString()));
         CreateMap<PersonDTO, Person>()
-            .ForMember(p => p.Id, opt => opt.Ignore());
-
-        CreateMap<Person, PersonalDetailsForm>();
-        CreateMap<PersonalDetailsForm, Person>()
-           .ForMember(p => p.Id, otp => otp.Ignore());
+            .ForMember(l => l.Id, otp => otp.Ignore())
+            .ForMember(p => p.Gender, opt => opt.MapFrom(p => (Genders)Enum.Parse(typeof(Genders), p.Gender, true)));
 
         CreateMap<Skill, SkillDTO>()
             .ForMember(s => s.Level, otp => otp.MapFrom(s => s.Level.ToString()));
